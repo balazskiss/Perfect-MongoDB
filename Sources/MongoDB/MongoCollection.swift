@@ -583,6 +583,18 @@ public class MongoCollection {
 		}
 		return MongoCursor(rawPtr: cursor)
 	}
+    
+    public func findModern(filter: BSON = BSON(), options: BSON? = nil) -> MongoCursor? {
+        guard let ptr = self.ptr else {
+            return nil
+        }
+        
+        let cursor = mongoc_collection_find_with_opts(ptr, filter.doc, options?.doc, nil)
+        guard cursor != nil else {
+            return nil
+        }
+        return MongoCursor(rawPtr: cursor)
+    }
 	
 	/**
 	*  Selects documents in a collection and returns a cursor to the selected documents.
